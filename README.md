@@ -14,30 +14,32 @@ network functional robustness in the context of cascading extinctions.
 The example is just illustrative, and did not intend to produce the same
 results as those reported in the manuscript.
 
-The illustrated framework is depicted below. In step (1), we modeled the
-occupancy probability of fish as a function of coral and turf algae
-cover using site occupancy modeling. Based on the model output, we
-classified species as either coral-associated or co-occurring fish. In
-step (2), coral and fish species were connected based on the predicted
-site occupancy probability of each coral-associated fish (fish with
-different colors in the center of the network) relative to the cover of
-each coral species (corals with different colors, in the left). Then,
-coral-associated and co-occurring fish in subnetwork 2 were connected
-based on Pearson’s correlation values between fish site occupancy
-probability. With the networks established, we applied a removal
-algorithm that eliminated corals and subsequently calculated the direct
-and indirect effects of coral species removal on network robustness at
-each elimination step ($t=0,t=1, ..., |A|$). Lost links are shown in
-red. In step (3), we related fish species composition and species traits
-at each elimination step. In step (4), we computed the loss in trait
-space area following corals and fish removal. The area delimited by the
-black polygon depicts the trait space area at $t=0$, and the area
-delimited by the red polygon depicts the trait space area at $t=1$
-Finally, in step (5), we applied a hyperbolic function (non-linear
-model) to the robustness data, analyzing both the remaining taxonomic
-diversity (TD, represented on the first y-axis with a solid curve) and
-functional diversity (FD, represented on the second y-axis with a dashed
-curve) along the gradient of coral elimination (x-axis).
+The basis of the framework is the species-habitat network approach
+(Marini et al. 2019). The illustrated framework is depicted below. In
+step (1), we modeled the occupancy probability of fish as a function of
+coral and turf algae cover using site occupancy modeling. Based on the
+model output, we classified species as either coral-associated or
+co-occurring fish. In step (2), coral and fish species were connected
+based on the predicted site occupancy probability of each
+coral-associated fish (fish with different colors in the center of the
+network) relative to the cover of each coral species (corals with
+different colors, in the left). Then, coral-associated and co-occurring
+fish in subnetwork 2 were connected based on Pearson’s correlation
+values between fish site occupancy probability. With the networks
+established, we applied a removal algorithm that eliminated corals and
+subsequently calculated the direct and indirect effects of coral species
+removal on network robustness at each elimination step
+($t=0,t=1, ..., |A|$). Lost links are shown in red. In step (3), we
+related fish species composition and species traits at each elimination
+step. In step (4), we computed the loss in trait space area following
+corals and fish removal. The area delimited by the black polygon depicts
+the trait space area at $t=0$, and the area delimited by the red polygon
+depicts the trait space area at $t=1$ Finally, in step (5), we applied a
+hyperbolic function (non-linear model) to the robustness data, analyzing
+both the remaining taxonomic diversity (TD, represented on the first
+y-axis with a solid curve) and functional diversity (FD, represented on
+the second y-axis with a dashed curve) along the gradient of coral
+elimination (x-axis).
 
 <img src="output/framework.png" width="100%" height="100%" style="display: block; margin: auto;" />
 Study framework. Source of pictures to draw the silhouettes: coral -
@@ -456,8 +458,8 @@ hyper_curve_secondary_RFS <- fit.hyperbolica (analysis_dataset[,c("no", "ext.low
 
 <br> <br>
 
-After fitting the model to the data we bind the predictions to the
-analysis dataset, and estimated the network robustness by integrating
+After fitting the model to the data, we bind the predictions to the
+analysis dataset, and estimated network robustness by integrating
 (summing up) infinitesimally small values of the spline interpolated
 using the fitted hyperbolic function applied to the minimum and maximum
 of the proportion of removed partite A species/corals.
@@ -471,53 +473,35 @@ analysis_dataset$pred_remain_RFS_secondary <- hyper_curve_secondary_RFS$preds
 
 # robustness
 # sr
-(SR1 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
+SR1 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
                       analysis_dataset$pred_remain_SR_all), 
                       min(hyper_curve_secondary_RFS$x), 
                       max(hyper_curve_secondary_RFS$x), 
                       subdivisions = max(100L, 
-                                         length(hyper_curve_secondary_RFS$x)))))
-```
-
-    ## 0.8899325 with absolute error < 0.00012
-
-``` r
+                                         length(hyper_curve_secondary_RFS$x))))
 # SR secondary
-(SR2 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
+SR2 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
                     analysis_dataset$pred_remain_SR_secondary), 
            min(hyper_curve_secondary_RFS$x), 
            max(hyper_curve_secondary_RFS$x), 
            subdivisions = max(100L, 
-                                         length(hyper_curve_secondary_RFS$x)))))
-```
+                                         length(hyper_curve_secondary_RFS$x))))
 
-    ## 0.6036838 with absolute error < 6.3e-07
-
-``` r
 # FD cora lassociated
-(FD1 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
+FD1 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
                     analysis_dataset$pred_remain_RFS_associated), 
            min(hyper_curve_secondary_RFS$x), 
            max(hyper_curve_secondary_RFS$x), 
            subdivisions = max(100L, 
-                                          length(hyper_curve_secondary_RFS$x)))))
-```
-
-    ## 0.9171699 with absolute error < 4.1e-06
-
-``` r
+                                          length(hyper_curve_secondary_RFS$x))))
 # fd otehr
-(FD2 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
+FD2 <- (integrate(splinefun(hyper_curve_secondary_RFS$x, 
                      analysis_dataset$pred_remain_RFS_secondary), 
            min(hyper_curve_secondary_RFS$x), 
            max(hyper_curve_secondary_RFS$x), 
            subdivisions = max(100L, 
-                              length(hyper_curve_secondary_RFS$x)))))
-```
+                              length(hyper_curve_secondary_RFS$x))))
 
-    ## 0.7931465 with absolute error < 1.9e-05
-
-``` r
 # create a table to show robustness results
 require(dplyr); require(knitr)
 data.frame(rbind(SR_direct = SR1$value,
@@ -535,7 +519,8 @@ data.frame(rbind(SR_direct = SR1$value,
 | FD_direct   |      0.9171699 |
 | FD_indirect |      0.7931465 |
 
-Finally, we can now plot the robustness curves and the trait space.
+Finally, we can now plot the robustness curves for direct and indirect
+effects of the removal of partite A species on the other partities.
 
 ``` r
 # plot
@@ -645,3 +630,9 @@ Y-axes. Yellow tones represent losses in functional diversity, while
 grey and black represent losses in taxonomic diversity. Diamonds and
 circles denote the direct and indirect effects of coral species
 extinction on such biodiversity dimensions.
+
+Cited literature
+
+Marini L, Bartomeus I, Rader R, Lami F. Species–Habitat networks: A tool
+to improve landscape management for conservation. J Appl Ecol. 2019; 56:
+923–928. <https://doi.org/10.1111/1365-2664.13337>
