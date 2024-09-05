@@ -39,7 +39,9 @@ hyperbolic function (non-linear model) to the robustness data, analyzing
 both the remaining taxonomic diversity (TD, represented on the first
 y-axis with a solid curve) and functional diversity (FD, represented on
 the second y-axis with a dashed curve) along the gradient of coral
-elimination (x-axis).
+elimination (x-axis). Note that the approach is based on the analysis of
+two bipartite networks. Thus, the approach described here can as well be
+applied to assessment of robustness of one single bipartite network.
 
 <img src="output/framework.png" width="100%" height="100%" style="display: block; margin: auto;" />
 Study framework. Source of pictures to draw the silhouettes: coral -
