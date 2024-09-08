@@ -9,6 +9,9 @@ Quimbayo, Vinicius A G Bastazini
 <!-- badges: start -->
 <!-- badges: end -->
 
+Zenodo DOI Badge:
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13375625.svg)](https://doi.org/10.5281/zenodo.13375625)
+
 This is a working example to run the framework developed to assess
 network functional robustness in the context of cascading extinctions.
 The example is just illustrative, and did not intend to produce the same
